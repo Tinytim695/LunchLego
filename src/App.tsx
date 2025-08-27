@@ -161,7 +161,7 @@ function App() {
   const activeKid = state.kids.find(kid => kid.id === state.activeKidId);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
       <Header
         currentDate={state.currentDate}
         activeKid={activeKid}
