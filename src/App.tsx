@@ -174,7 +174,7 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Pantry Section */}
           <div className="space-y-6">
-            <Card>
+            <Card variant="blue">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">Smart Pantry</h2>
               <PantryControls
                 searchTerm={searchTerm}
@@ -187,7 +187,7 @@ function App() {
               />
             </Card>
 
-            <Card padding="sm">
+            <Card padding="sm" variant="white">
               <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                 <PantryGrid
                   ingredients={state.ingredients}
@@ -208,7 +208,7 @@ function App() {
 
           {/* Lunch Box Builder Section */}
           <div className="space-y-6">
-            <Card>
+            <Card variant="purple">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 Lunch Box Builder
                 {activeKid && <span className="text-base font-normal text-slate-600 ml-2">for {activeKid.name}</span>}
