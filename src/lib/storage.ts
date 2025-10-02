@@ -54,6 +54,14 @@ export async function getKids(): Promise<Kid[]> {
 
 export async function deleteKid(id: string): Promise<void> {
   await db.delete('kids', id);
+  
+  // Also delete all lunch boxes for this kid
+  const kidLunchBoxes = await getLunchBoxesByKid(id);
+  const tx = db.transaction(['lunchBoxes'], 'readwrite');
+  for (const lunchBox of kidLunchBoxes) {
+    await tx.objectStore('lunchBoxes').delete(lunchBox.id);
+  }
+  await tx.done;
 }
 
 // Ingredients operations

@@ -6,6 +6,7 @@ import { PantryGrid } from './components/pantry/PantryGrid';
 import { LunchBoxBuilder } from './components/planner/LunchBoxBuilder';
 import { AddIngredientModal } from './components/modals/AddIngredientModal';
 import { AddKidModal } from './components/modals/AddKidModal';
+import { SettingsModal } from './components/modals/SettingsModal';
 import { KidSelector } from './components/KidSelector';
 import { Card } from './components/ui/Card';
 import { useAppState } from './hooks/useAppState';
@@ -23,7 +24,10 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showAddKidModal, setShowAddKidModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [activeDragItem, setActiveDragItem] = useState<Ingredient | null>(null);
+  const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>('light');
+  const [notifications, setNotifications] = useState(false);
 
   // Initialize with sample data if empty
   React.useEffect(() => {
@@ -58,6 +62,20 @@ function App() {
     await saveKid(kid);
     updateKids([...state.kids, kid]);
   }, [state.kids, updateKids]);
+
+  const handleDeleteKid = useCallback(async (kidId: string) => {
+    // Remove kid from state
+    const updatedKids = state.kids.filter(kid => kid.id !== kidId);
+    updateKids(updatedKids);
+    
+    // If deleted kid was active, select first remaining kid or none
+    if (state.activeKidId === kidId) {
+      const newActiveKid = updatedKids.length > 0 ? updatedKids[0].id : undefined;
+      setActiveKid(newActiveKid || '');
+    }
+    
+    // TODO: Also remove kid's lunch boxes from storage
+  }, [state.kids, state.activeKidId, updateKids, setActiveKid]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     const ingredient = event.active.data.current?.ingredient;
@@ -178,8 +196,8 @@ function App() {
         currentDate={state.currentDate}
         activeKid={activeKid}
         onDateChange={setCurrentDate}
-        onKidSelect={() => {/* TODO: Implement kid selector */}}
-        onSettingsClick={() => {/* TODO: Implement settings */}}
+        onKidSelect={() => {}}
+        onSettingsClick={() => setShowSettingsModal(true)}
       />
 
       <main className="max-w-7xl mx-auto px-4 py-6">
@@ -268,6 +286,17 @@ function App() {
         isOpen={showAddKidModal}
         onClose={() => setShowAddKidModal(false)}
         onAdd={handleAddKid}
+      />
+      
+      <SettingsModal
+        isOpen={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+        kids={state.kids}
+        onDeleteKid={handleDeleteKid}
+        theme={theme}
+        onThemeChange={setTheme}
+        notifications={notifications}
+        onNotificationsChange={setNotifications}
       />
     </div>
   );
