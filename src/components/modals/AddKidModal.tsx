@@ -12,15 +12,17 @@ interface AddKidModalProps {
   onAdd: (kid: Kid) => void;
 }
 
-const avatarColors = [
-  'bg-red-100 text-red-600',
-  'bg-blue-100 text-blue-600',
-  'bg-green-100 text-green-600',
-  'bg-yellow-100 text-yellow-600',
-  'bg-purple-100 text-purple-600',
-  'bg-pink-100 text-pink-600',
-  'bg-indigo-100 text-indigo-600',
-  'bg-orange-100 text-orange-600',
+const kidEmojis = [
+  { emoji: '😊', bg: 'bg-yellow-100' },
+  { emoji: '🤗', bg: 'bg-orange-100' },
+  { emoji: '😎', bg: 'bg-blue-100' },
+  { emoji: '🥳', bg: 'bg-purple-100' },
+  { emoji: '🤓', bg: 'bg-green-100' },
+  { emoji: '😋', bg: 'bg-pink-100' },
+  { emoji: '🌟', bg: 'bg-indigo-100' },
+  { emoji: '🦄', bg: 'bg-rose-100' },
+  { emoji: '🐻', bg: 'bg-amber-100' },
+  { emoji: '🚀', bg: 'bg-cyan-100' },
 ];
 
 export function AddKidModal({ isOpen, onClose, onAdd }: AddKidModalProps) {
@@ -30,7 +32,7 @@ export function AddKidModal({ isOpen, onClose, onAdd }: AddKidModalProps) {
     allergies: '',
     preferences: '',
     dislikes: '',
-    avatarColor: avatarColors[0],
+    avatar: kidEmojis[0].emoji + '|' + kidEmojis[0].bg,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,7 +45,7 @@ export function AddKidModal({ isOpen, onClose, onAdd }: AddKidModalProps) {
       allergies: formData.allergies.split(',').map(item => item.trim()).filter(Boolean),
       preferences: formData.preferences.split(',').map(item => item.trim()).filter(Boolean),
       dislikes: formData.dislikes.split(',').map(item => item.trim()).filter(Boolean),
-      avatar: formData.avatarColor,
+      avatar: formData.avatar,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -58,7 +60,7 @@ export function AddKidModal({ isOpen, onClose, onAdd }: AddKidModalProps) {
       allergies: '',
       preferences: '',
       dislikes: '',
-      avatarColor: avatarColors[0],
+      avatar: kidEmojis[0].emoji + '|' + kidEmojis[0].bg,
     });
   };
 
@@ -93,20 +95,20 @@ export function AddKidModal({ isOpen, onClose, onAdd }: AddKidModalProps) {
           />
 
           <div className="space-y-1">
-            <label className="block text-sm font-medium text-slate-700">Avatar Color</label>
+            <label className="block text-sm font-medium text-slate-700">Choose Avatar</label>
             <div className="grid grid-cols-4 gap-2">
-              {avatarColors.map((color, index) => (
+              {kidEmojis.map((option, index) => (
                 <button
                   key={index}
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, avatarColor: color }))}
+                  onClick={() => setFormData(prev => ({ ...prev, avatar: option.emoji + '|' + option.bg }))}
                   className={`
-                    w-12 h-12 rounded-full flex items-center justify-center transition-all
-                    ${color}
-                    ${formData.avatarColor === color ? 'ring-2 ring-primary-500 scale-110' : 'hover:scale-105'}
+                    w-12 h-12 rounded-full flex items-center justify-center transition-all text-2xl
+                    ${option.bg}
+                    ${formData.avatar === option.emoji + '|' + option.bg ? 'ring-2 ring-primary-500 scale-110' : 'hover:scale-105'}
                   `}
                 >
-                  <User className="w-6 h-6" />
+                  {option.emoji}
                 </button>
               ))}
             </div>

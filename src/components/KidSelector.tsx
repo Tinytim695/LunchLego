@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Kid } from '@/types';
 
@@ -15,7 +15,9 @@ export function KidSelector({ kids, activeKidId, onKidSelect, onAddKid }: KidSel
     return (
       <div className="text-center py-8">
         <div className="mb-4">
-          <User className="w-12 h-12 text-slate-400 mx-auto mb-2" />
+          <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl">
+            👶
+          </div>
           <p className="text-slate-600">No kids added yet</p>
           <p className="text-sm text-slate-500">Add your first kid to start planning lunches</p>
         </div>
@@ -52,8 +54,8 @@ export function KidSelector({ kids, activeKidId, onKidSelect, onAddKid }: KidSel
               }
             `}
           >
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 ${kid.avatar || 'bg-slate-100 text-slate-600'}`}>
-              <User className="w-6 h-6" />
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl ${kid.avatar ? kid.avatar.split('|')[1] : 'bg-slate-100'}`}>
+              {kid.avatar ? kid.avatar.split('|')[0] : '👶'}
             </div>
             <p className="font-medium text-slate-900 text-sm">{kid.name}</p>
             <p className="text-xs text-slate-500">Age {kid.age}</p>
