@@ -5,36 +5,43 @@ import { PantryControls } from './components/pantry/PantryControls';
 import { PantryGrid } from './components/pantry/PantryGrid';
 import { LunchBoxBuilder } from './components/planner/LunchBoxBuilder';
 import { AddIngredientModal } from './components/modals/AddIngredientModal';
+import { AddKidModal } from './components/modals/AddKidModal';
+import { KidSelector } from './components/KidSelector';
 import { Card } from './components/ui/Card';
 import { useAppState } from './hooks/useAppState';
-import { saveIngredient, saveLunchBox } from './lib/storage';
+import { saveIngredient, saveLunchBox, saveKid } from './lib/storage';
 import { calculateNutritionBalance } from './lib/nutrition';
 import { generateId } from './lib/utils';
 import { sampleKids, sampleIngredients } from './data/sampleData';
-import { Ingredient, LunchBox, LunchBoxIngredient } from './types';
+import { Ingredient, LunchBox, LunchBoxIngredient, Kid } from './types';
 
 function App() {
-  const { state, loading, updateIngredients, updateLunchBoxes, setActiveKid, setCurrentDate, setPantryView } = useAppState();
+  const { state, loading, updateIngredients, updateLunchBoxes, updateKids, setActiveKid, setCurrentDate, setPantryView } = useAppState();
   
   // Local state
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddKidModal, setShowAddKidModal] = useState(false);
   const [activeDragItem, setActiveDragItem] = useState<Ingredient | null>(null);
 
   // Initialize with sample data if empty
   React.useEffect(() => {
-    if (!loading && state.ingredients.length === 0) {
+    if (!loading && state.ingredients.length === 0 && state.kids.length === 0) {
       // Add sample data
       const initializeData = async () => {
+        for (const kid of sampleKids) {
+          await saveKid(kid);
+        }
         for (const ingredient of sampleIngredients) {
           await saveIngredient(ingredient);
         }
+        updateKids(sampleKids);
         updateIngredients(sampleIngredients);
       };
       initializeData();
     }
-  }, [loading, state.ingredients.length, updateIngredients]);
+  }, [loading, state.ingredients.length, state.kids.length, updateIngredients, updateKids]);
 
   // Get current lunch box
   const currentLunchBox = state.lunchBoxes.find(
@@ -46,6 +53,11 @@ function App() {
     await saveIngredient(ingredient);
     updateIngredients([...state.ingredients, ingredient]);
   }, [state.ingredients, updateIngredients]);
+
+  const handleAddKid = useCallback(async (kid: Kid) => {
+    await saveKid(kid);
+    updateKids([...state.kids, kid]);
+  }, [state.kids, updateKids]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     const ingredient = event.active.data.current?.ingredient;
@@ -175,6 +187,18 @@ function App() {
           {/* Pantry Section */}
           <div className="space-y-6">
             <Card variant="blue">
+              <h2 className="text-xl font-semibold text-slate-900 mb-4">Kids</h2>
+              <KidSelector
+                kids={state.kids}
+                activeKidId={state.activeKidId}
+                onKidSelect={setActiveKid}
+                onAddKid={() => setShowAddKidModal(true)}
+              />
+            </Card>
+
+            {state.activeKidId && (
+              <>
+                <Card variant="blue">
               <h2 className="text-xl font-semibold text-slate-900 mb-4">Smart Pantry</h2>
               <PantryControls
                 searchTerm={searchTerm}
@@ -187,7 +211,7 @@ function App() {
               />
             </Card>
 
-            <Card padding="sm" variant="white">
+                <Card padding="sm" variant="white">
               <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                 <PantryGrid
                   ingredients={state.ingredients}
@@ -204,6 +228,8 @@ function App() {
                 </DragOverlay>
               </DndContext>
             </Card>
+              </>
+            )}
           </div>
 
           {/* Lunch Box Builder Section */}
@@ -236,6 +262,12 @@ function App() {
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
         onAdd={handleAddIngredient}
+      />
+      
+      <AddKidModal
+        isOpen={showAddKidModal}
+        onClose={() => setShowAddKidModal(false)}
+        onAdd={handleAddKid}
       />
     </div>
   );
