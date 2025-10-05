@@ -24,7 +24,10 @@ interface CompartmentProps {
 function Compartment({ compartment, items, ingredients, onRemoveIngredient }: CompartmentProps) {
   const { isOver, setNodeRef } = useDroppable({
     id: `compartment-${compartment}`,
-    data: { compartment },
+    data: { 
+      type: 'compartment',
+      compartment 
+    },
   });
 
   const compartmentItems = items.filter(item => item.compartment === compartment);

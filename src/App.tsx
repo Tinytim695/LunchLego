@@ -78,8 +78,12 @@ function App() {
   }, [state.kids, state.activeKidId, updateKids, setActiveKid]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
-    const ingredient = event.active.data.current?.ingredient;
-    if (ingredient) {
+    const { active } = event;
+    const ingredient = active.data.current?.ingredient;
+    
+    console.log('Drag started:', ingredient?.name);
+    
+    if (ingredient && active.data.current?.type === 'ingredient') {
       setActiveDragItem(ingredient);
     }
   }, []);
@@ -88,12 +92,18 @@ function App() {
     setActiveDragItem(null);
     
     const { active, over } = event;
-    if (!over || !active.data.current?.ingredient) return;
+    if (!over || !active.data.current?.ingredient || !state.activeKidId) return;
 
     const ingredient = active.data.current.ingredient as Ingredient;
-    const compartment = parseInt(over.id.toString().split('-')[1]);
+    const overId = over.id.toString();
     
-    if (!compartment || !state.activeKidId) return;
+    // Check if dropped on a compartment
+    if (!overId.startsWith('compartment-')) return;
+    
+    const compartment = parseInt(overId.split('-')[1]);
+    if (!compartment || compartment < 1 || compartment > 4) return;
+    
+    console.log('Dropping ingredient:', ingredient.name, 'into compartment:', compartment);
 
     // Create or update lunch box
     const existingLunchBox = currentLunchBox;

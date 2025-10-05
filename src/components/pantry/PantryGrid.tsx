@@ -19,7 +19,10 @@ interface DraggableIngredientProps {
 function DraggableIngredient({ ingredient }: DraggableIngredientProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: ingredient.id,
-    data: { type: 'ingredient', ingredient },
+    data: { 
+      type: 'ingredient', 
+      ingredient 
+    },
   });
 
   const style = transform ? {
