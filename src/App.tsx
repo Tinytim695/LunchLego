@@ -211,6 +211,7 @@ function App() {
       />
 
       <main className="max-w-7xl mx-auto px-4 py-6">
+        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Pantry Section */}
           <div className="space-y-6">
@@ -240,21 +241,11 @@ function App() {
             </Card>
 
                 <Card padding="sm" variant="white">
-              <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                 <PantryGrid
                   ingredients={state.ingredients}
                   searchTerm={searchTerm}
                   selectedCategory={selectedCategory}
                 />
-                <DragOverlay>
-                  {activeDragItem && (
-                    <div className="drag-item p-4 bg-white shadow-lg rotate-3 scale-105">
-                      <h3 className="font-medium text-slate-900 text-sm">{activeDragItem.name}</h3>
-                      <p className="text-xs text-slate-600">{activeDragItem.category}</p>
-                    </div>
-                  )}
-                </DragOverlay>
-              </DndContext>
             </Card>
               </>
             )}
@@ -284,6 +275,16 @@ function App() {
             </Card>
           </div>
         </div>
+        
+        <DragOverlay>
+          {activeDragItem && (
+            <div className="drag-item p-4 bg-white shadow-lg rotate-3 scale-105 border-2 border-primary-400">
+              <h3 className="font-medium text-slate-900 text-sm">{activeDragItem.name}</h3>
+              <p className="text-xs text-slate-600">{activeDragItem.category}</p>
+            </div>
+          )}
+        </DragOverlay>
+        </DndContext>
       </main>
 
       <AddIngredientModal
