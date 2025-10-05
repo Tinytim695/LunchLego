@@ -1,0 +1,14 @@
+{
+  "packageId": "com.lunchlego.app",
+  "host": "your-domain.com",
+  "name": "LunchLego",
+  "launcherName": "LunchLego",
+  "display": "standalone",
+  "themeColor": "#0f172a",
+  "navigationColor": "#0f172a",
+  "backgroundColor": "#0f172a",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://your-domain.com/icons/pwa-512x512.png",
+  "maskableIconUrl": "https://your-domain.com/icons/pwa-512x512.png"
+}
