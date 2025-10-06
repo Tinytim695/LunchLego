@@ -39,13 +39,13 @@ function DraggableIngredient({ ingredient }: DraggableIngredientProps) {
       {...listeners}
       {...attributes}
       className={`
-        p-4 cursor-grab active:cursor-grabbing rounded-xl border-2 border-dashed transition-all
-        bg-gradient-to-br from-white/90 to-slate-50/90 backdrop-blur-sm
-        hover:from-blue-50/90 hover:to-purple-50/90 hover:border-blue-300 hover:shadow-md
-        active:scale-105 active:rotate-1
+        p-5 cursor-grab active:cursor-grabbing rounded-2xl border-2 border-dashed transition-all duration-300 ease-out
+        bg-gradient-to-br from-white/95 to-slate-50/95 backdrop-blur-md shadow-lg
+        hover:from-blue-50/95 hover:to-purple-50/95 hover:border-blue-400/80 hover:shadow-xl hover:scale-[1.02]
+        active:scale-105 active:rotate-1 transform
         ${isDragging ? 'opacity-50 rotate-3 scale-105' : ''}
-        ${hasExpired ? 'border-red-300 from-red-50/90 to-red-100/90' : ''}
-        ${isExpiring ? 'border-orange-300 from-orange-50/90 to-orange-100/90' : 'border-slate-200'}
+        ${hasExpired ? 'border-red-400/80 from-red-50/95 to-red-100/95 shadow-red-200/50' : ''}
+        ${isExpiring ? 'border-orange-400/80 from-orange-50/95 to-orange-100/95 shadow-orange-200/50' : 'border-slate-300/60'}
       `}
     >
       <div className="flex items-start justify-between mb-2">

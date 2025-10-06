@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Kid, Ingredient, LunchBox, AppState } from '@/types';
-import { initDB, getKids, getIngredients, getLunchBoxes, saveKid } from '@/lib/storage';
+import { initDB, getKids, getIngredients, getLunchBoxes, saveKid, deleteKid as deleteKidFromDB } from '@/lib/storage';
 
 export function useAppState() {
   const [state, setState] = useState<AppState>({
@@ -53,6 +53,20 @@ export function useAppState() {
     setState(prev => ({ ...prev, kids: [...prev.kids, kid] }));
   }, []);
 
+  const deleteKid = useCallback(async (kidId: string) => {
+    await deleteKidFromDB(kidId);
+    setState(prev => {
+      const updatedKids = prev.kids.filter(kid => kid.id !== kidId);
+      return {
+        ...prev,
+        kids: updatedKids,
+        activeKidId: prev.activeKidId === kidId 
+          ? (updatedKids.length > 0 ? updatedKids[0].id : undefined)
+          : prev.activeKidId
+      };
+    });
+  }, []);
+
   const updateIngredients = useCallback((ingredients: Ingredient[]) => {
     setState(prev => ({ ...prev, ingredients }));
   }, []);
@@ -79,6 +93,7 @@ export function useAppState() {
     error,
     updateKids,
     addKid,
+    deleteKid,
     updateIngredients,
     updateLunchBoxes,
     setActiveKid,

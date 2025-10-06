@@ -17,7 +17,7 @@ import { sampleKids, sampleIngredients } from './data/sampleData';
 import { Ingredient, LunchBox, LunchBoxIngredient, Kid } from './types';
 
 function App() {
-  const { state, loading, updateIngredients, updateLunchBoxes, updateKids, setActiveKid, setCurrentDate, setPantryView } = useAppState();
+  const { state, loading, updateIngredients, updateLunchBoxes, updateKids, setActiveKid, setCurrentDate, setPantryView, deleteKid } = useAppState();
   
   // Local state
   const [searchTerm, setSearchTerm] = useState('');
@@ -64,18 +64,8 @@ function App() {
   }, [state.kids, updateKids]);
 
   const handleDeleteKid = useCallback(async (kidId: string) => {
-    // Remove kid from state
-    const updatedKids = state.kids.filter(kid => kid.id !== kidId);
-    updateKids(updatedKids);
-    
-    // If deleted kid was active, select first remaining kid or none
-    if (state.activeKidId === kidId) {
-      const newActiveKid = updatedKids.length > 0 ? updatedKids[0].id : undefined;
-      setActiveKid(newActiveKid || '');
-    }
-    
-    // TODO: Also remove kid's lunch boxes from storage
-  }, [state.kids, state.activeKidId, updateKids, setActiveKid]);
+    await deleteKid(kidId);
+  }, [deleteKid]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     const { active } = event;

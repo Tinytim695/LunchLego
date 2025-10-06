@@ -17,16 +17,16 @@ export function Card({ children, className, padding = 'md', variant = 'default' 
   };
 
   const variantClasses = {
-    default: 'bg-white/80 backdrop-blur-sm',
-    blue: 'bg-blue-100/80 backdrop-blur-sm',
-    purple: 'bg-purple-100/80 backdrop-blur-sm',
-    pink: 'bg-pink-100/80 backdrop-blur-sm',
-    white: 'bg-white/90 backdrop-blur-sm',
+    default: 'bg-white/90 backdrop-blur-md shadow-xl',
+    blue: 'bg-gradient-to-br from-blue-50/90 to-indigo-100/90 backdrop-blur-md shadow-xl border-blue-200/50',
+    purple: 'bg-gradient-to-br from-purple-50/90 to-pink-100/90 backdrop-blur-md shadow-xl border-purple-200/50',
+    pink: 'bg-gradient-to-br from-pink-50/90 to-rose-100/90 backdrop-blur-md shadow-xl border-pink-200/50',
+    white: 'bg-white/95 backdrop-blur-md shadow-xl',
   };
 
   return (
     <div className={cn(
-      'rounded-xl border border-white/20 shadow-lg',
+      'rounded-2xl border border-white/30',
       variantClasses[variant],
       paddingClasses[padding],
       className

@@ -158,10 +158,10 @@ export function SettingsModal({
                           </div>
                         </div>
                         <Button
-                          variant={deleteConfirm === kid.id ? "error" : "outline"}
+                          variant="outline"
                           size="sm"
                           onClick={() => handleDeleteKid(kid.id)}
-                          className={deleteConfirm === kid.id ? "bg-red-600 text-white hover:bg-red-700" : ""}
+                          className={deleteConfirm === kid.id ? "bg-red-600 text-white hover:bg-red-700 border-red-600" : "hover:bg-red-50 hover:border-red-300 hover:text-red-700"}
                         >
                           <Trash2 className="w-4 h-4 mr-2" />
                           {deleteConfirm === kid.id ? 'Confirm Delete' : 'Delete'}
