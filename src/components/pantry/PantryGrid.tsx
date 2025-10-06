@@ -44,8 +44,9 @@ function DraggableIngredient({ ingredient }: DraggableIngredientProps) {
         hover:from-blue-50/95 hover:to-purple-50/95 hover:border-blue-400/80 hover:shadow-xl hover:scale-[1.02]
         active:scale-105 active:rotate-1 transform
         ${isDragging ? 'opacity-50 rotate-3 scale-105' : ''}
-        ${hasExpired ? 'border-red-400/80 from-red-50/95 to-red-100/95 shadow-red-200/50' : ''}
-        ${isExpiring ? 'border-orange-400/80 from-orange-50/95 to-orange-100/95 shadow-orange-200/50' : 'border-slate-300/60'}
+        ${hasExpired ? 'border-red-400/80 from-red-50/95 to-red-100/95 shadow-red-200/50 ring-2 ring-red-200/50' : ''}
+        ${isExpiring && !hasExpired ? 'border-orange-400/80 from-orange-50/95 to-orange-100/95 shadow-orange-200/50 ring-2 ring-orange-200/50' : ''}
+        ${!hasExpired && !isExpiring ? 'border-slate-300/60' : ''}
       `}
     >
       <div className="flex items-start justify-between mb-2">
@@ -70,7 +71,7 @@ function DraggableIngredient({ ingredient }: DraggableIngredientProps) {
           <p>{ingredient.quantity} {ingredient.unit}</p>
           {ingredient.expirationDate && (
             <p className={hasExpired ? 'text-red-600' : isExpiring ? 'text-orange-600' : ''}>
-              Expires: {formatShortDate(ingredient.expirationDate)}
+              {hasExpired ? 'Expired' : 'Expires'}: {formatShortDate(ingredient.expirationDate)}
             </p>
           )}
         </div>

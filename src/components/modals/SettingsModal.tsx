@@ -16,6 +16,8 @@ interface SettingsModalProps {
   onThemeChange: (theme: 'light' | 'dark' | 'auto') => void;
   notifications: boolean;
   onNotificationsChange: (enabled: boolean) => void;
+  expirationAlerts: boolean;
+  onExpirationAlertsChange: (enabled: boolean) => void;
 }
 
 export function SettingsModal({
@@ -27,6 +29,8 @@ export function SettingsModal({
   onThemeChange,
   notifications,
   onNotificationsChange,
+  expirationAlerts,
+  onExpirationAlertsChange,
 }: SettingsModalProps) {
   const [activeTab, setActiveTab] = useState<'kids' | 'appearance' | 'data' | 'notifications' | 'about'>('kids');
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
@@ -279,12 +283,25 @@ export function SettingsModal({
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-200 opacity-50">
+                  <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-200">
                     <div>
                       <h4 className="font-medium text-slate-900">Expiration Alerts</h4>
                       <p className="text-sm text-slate-500">Get notified when ingredients are expiring soon</p>
                     </div>
-                    <div className="text-sm text-slate-400">Coming Soon</div>
+                    <button
+                      onClick={() => onExpirationAlertsChange(!expirationAlerts)}
+                      className={`
+                        relative inline-flex h-6 w-11 items-center rounded-full transition-colors
+                        ${expirationAlerts ? 'bg-primary-600' : 'bg-slate-200'}
+                      `}
+                    >
+                      <span
+                        className={`
+                          inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+                          ${expirationAlerts ? 'translate-x-6' : 'translate-x-1'}
+                        `}
+                      />
+                    </button>
                   </div>
                 </div>
               </div>

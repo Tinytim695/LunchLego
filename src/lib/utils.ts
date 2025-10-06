@@ -23,13 +23,22 @@ export function formatShortDate(date: Date): string {
 
 export function isExpiringSoon(date: Date, days: number = 3): boolean {
   const now = new Date();
-  const diffTime = date.getTime() - now.getTime();
+  now.setHours(0, 0, 0, 0); // Reset time to start of day
+  const expirationDate = new Date(date);
+  expirationDate.setHours(0, 0, 0, 0); // Reset time to start of day
+  
+  const diffTime = expirationDate.getTime() - now.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays <= days && diffDays >= 0;
 }
 
 export function isExpired(date: Date): boolean {
-  return date < new Date();
+  const now = new Date();
+  now.setHours(0, 0, 0, 0); // Reset time to start of day
+  const expirationDate = new Date(date);
+  expirationDate.setHours(0, 0, 0, 0); // Reset time to start of day
+  
+  return expirationDate < now;
 }
 
 export function generateId(): string {

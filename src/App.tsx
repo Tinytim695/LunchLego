@@ -8,11 +8,13 @@ import { AddIngredientModal } from './components/modals/AddIngredientModal';
 import { AddKidModal } from './components/modals/AddKidModal';
 import { SettingsModal } from './components/modals/SettingsModal';
 import { KidSelector } from './components/KidSelector';
+import { ExpirationAlert } from './components/ExpirationAlert';
 import { Card } from './components/ui/Card';
 import { useAppState } from './hooks/useAppState';
 import { saveIngredient, saveLunchBox, saveKid } from './lib/storage';
 import { calculateNutritionBalance } from './lib/nutrition';
 import { generateId } from './lib/utils';
+import { useExpirationAlerts } from './hooks/useExpirationAlerts';
 import { sampleKids, sampleIngredients } from './data/sampleData';
 import { Ingredient, LunchBox, LunchBoxIngredient, Kid } from './types';
 
@@ -28,6 +30,10 @@ function App() {
   const [activeDragItem, setActiveDragItem] = useState<Ingredient | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>('light');
   const [notifications, setNotifications] = useState(false);
+  const [expirationAlerts, setExpirationAlerts] = useState(true);
+
+  // Expiration alerts hook
+  const { showAlert, dismissAlert } = useExpirationAlerts(state.ingredients, expirationAlerts);
 
   // Initialize with sample data if empty
   React.useEffect(() => {
@@ -200,6 +206,12 @@ function App() {
         onSettingsClick={() => setShowSettingsModal(true)}
       />
 
+      <ExpirationAlert
+        ingredients={state.ingredients}
+        isVisible={showAlert}
+        onDismiss={dismissAlert}
+      />
+
       <main className="max-w-7xl mx-auto px-4 py-6">
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -298,6 +310,8 @@ function App() {
         onThemeChange={setTheme}
         notifications={notifications}
         onNotificationsChange={setNotifications}
+        expirationAlerts={expirationAlerts}
+        onExpirationAlertsChange={setExpirationAlerts}
       />
     </div>
   );
