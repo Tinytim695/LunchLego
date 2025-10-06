@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, Clock, X } from 'lucide-react';
+import { TriangleAlert as AlertTriangle, Clock, X } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
 import { Badge } from './ui/Badge';
