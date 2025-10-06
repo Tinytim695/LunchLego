@@ -4,7 +4,7 @@ import { Ingredient } from '@/types';
 import { Badge } from '../ui/Badge';
 import { getCategoryColor } from '@/lib/nutrition';
 import { isExpiringSoon, isExpired, formatShortDate } from '@/lib/utils';
-import { AlertTriangle, Clock } from 'lucide-react';
+import { TriangleAlert as AlertTriangle, Clock } from 'lucide-react';
 
 interface PantryGridProps {
   ingredients: Ingredient[];
